@@ -1,0 +1,279 @@
+<!doctype html>
+<html>
+  <head>
+    <title>SEXIEST GAME</title>
+    <style>
+      #timer {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        border-left: solid 3px #f00;
+        border-bottom: solid 3px #f00;
+        padding: 1em;
+        color: #f00;
+      }
+      #header {
+        z-index: 2;
+      }
+      #colourPicker {
+        position: absolute;
+        z-index: 2;
+        bottom: 0;
+        right: 0;
+        padding: 2em;
+        border-top: solid 3px #f00;
+        border-left: solid 3px #f00;
+      }
+
+        #colourPicker div {
+          display: inline-block;
+          margin-right: 1em;
+          height: 1em;
+          width: 1em;
+          border: solid 1px #000;
+        }
+
+      #black {
+        background-color: #000;
+      }
+      #red {
+        background-color: #f00;
+      }
+      #blue {
+        background-color: #00f;
+      }
+      #green {
+        background-color: #0f0;
+      }
+      #yellow {
+        background-color: #ff0;
+      }
+      #brown {
+        background-color: #964b00;
+      }
+      #pink {
+        background-color: #ffc0cb;
+      }
+      #orange {
+        background-color: #ffa500;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="header">Draw a<span id="describer"></span></h1>
+    <div id="timer">60 seconds remaining</div>
+    <div id="colourPicker">
+      <h2>Select Colour</h2>
+      <div id="black"></div>
+      <div id="red"></div>
+      <div id="blue"></div>
+      <div id="green"></div>
+      <div id="brown"></div>
+      <div id="yellow"></div>
+      <div id="pink"></div>
+      <div id="orange"></div>
+    </div>
+    <script>
+
+    var mouseDown = false;
+    var cursorStrength = 1;
+    var mouseX = 0;
+    var mouseY = 0;
+    var timeRemaining = 60;
+    var color = "#000";
+    var inColourPicker = false;
+
+    var adjectives = [
+      "n attractive",
+      " bald",
+      " beautiful",
+      " chubby",
+      " clean",
+      " dazzling",
+      " drab",
+      "n elegant",
+      " fancy",
+      " fit",
+      " flabby",
+      " glamorous",
+      " gorgeous",
+      " handsome",
+      " magnificent",
+      " muscular",
+      " plain",
+      " plump",
+      " scruffy",
+      " sexy",
+      " shapely",
+      " skinny",
+      " stocky",
+      "n unkept",
+      "n unsightly"
+    ];
+    var nouns = [
+      "Soldier",
+      "Musician",
+      "Listener",
+      "Lady",
+      "Director",
+      "Man",
+      "Gypsy",
+      "Singer",
+      "Student",
+      "Actor",
+      "Worshipper",
+      "Sailor",
+      "Person",
+      "King",
+      "Prisoner",
+      "Dancer",
+      "Savage",
+      "Angel",
+      "Rioter",
+      "Thief",
+      "Friend",
+      "Policeman",
+      "Policewoman",
+      "Native",
+      "Ant",
+      "Chicken",
+      "Fish",
+      "Insect",
+      "Bird",
+      "Horse",
+      "Sheep",
+      "Goose",
+      "Cow",
+      "Bee",
+      "Kitten",
+      "Crow",
+      "Cat",
+      "Camel",
+      "Lion",
+      "Apple",
+      "Banana",
+      "Orange",
+      "Mango",
+      "Grape",
+      "Watermelon",
+      "Boat",
+      "Car",
+      "Plane",
+      "Train",
+      "Tree",
+      "Bush",
+      "Flower",
+      "Hill",
+      "Mountain",
+      "River",
+      "Garden",
+      "House",
+      "Garage",
+      "Office",
+      "Hospital",
+      "School",
+      "Courthouse",
+      "Book",
+      "Deck of Cards",
+      "Dice",
+      "Cup and Ball"
+    ];
+
+    document.addEventListener("mousemove", function(e) {
+      mouseX = e.pageX;
+      mouseY = e.pageY;
+    });
+    document.addEventListener("mousedown", function() {
+      mouseDown = true;
+    });
+    document.addEventListener("mouseup", function() {
+      mouseDown = false;
+    });
+
+    document.getElementById("black").addEventListener("mousedown", function() {
+      color = "#000";
+    });
+    document.getElementById("red").addEventListener("mousedown", function() {
+      color = "#f00";
+    });
+    document.getElementById("blue").addEventListener("mousedown", function() {
+      color = "#00f";
+    });
+    document.getElementById("green").addEventListener("mousedown", function() {
+      color = "#0f0";
+    });
+    document.getElementById("yellow").addEventListener("mousedown", function() {
+      color = "#ff0";
+    });
+    document.getElementById("brown").addEventListener("mousedown", function() {
+      color = "#964b00";
+    });
+    document.getElementById("pink").addEventListener("mousedown", function() {
+      color = "#ffc0cb";
+    });
+    document.getElementById("orange").addEventListener("mousedown", function() {
+      color = "#ffa500";
+    });
+
+    document.getElementById("colourPicker").addEventListener("mouseover", function() {
+      inColourPicker = true;
+    });
+
+    document.getElementById("colourPicker").addEventListener("mouseout", function() {
+      inColourPicker = false;
+    });
+
+    function reduceTime() {
+      if (timeRemaining > 0) {
+        timeRemaining--;
+        document.getElementById("timer").innerHTML = timeRemaining + " seconds remaining";
+      }
+
+    }
+
+    var randomAdjectiveIndex = Math.floor(Math.random() * adjectives.length)
+    var randomNounIndex = Math.floor(Math.random() * nouns.length)
+
+    function setUp() {
+      document.getElementById("describer").innerHTML = adjectives[randomAdjectiveIndex] + " " + nouns[randomNounIndex]
+    }
+
+    function gameLoop() {
+      if (timeRemaining < 1) {
+        document.getElementById("header").innerHTML = "Time's up! SHOW ME WHAT YOU GOT FOR " + adjectives[randomAdjectiveIndex] + " " + nouns[randomNounIndex];
+        return;
+      }
+      if (inColourPicker) {
+        return;
+      }
+      if (mouseDown) {
+        if (cursorStrength < 20) {
+          cursorStrength++;
+        }
+        var ele = document.createElement("DIV");
+        ele.style.backgroundColor = color;
+        ele.style.width = cursorStrength + "px";
+        ele.style.height = cursorStrength + "px";
+        ele.style.position = "absolute";
+        ele.style.top = mouseY + "px";
+        ele.style.left = mouseX + "px";
+        ele.style.borderRadius = Math.ceil(cursorStrength / 2) + "px";
+        console.log(ele)
+        document.body.appendChild(ele)
+
+      } else {
+        if (cursorStrength > 1) {
+          cursorStrength--;
+        }
+
+      }
+    }
+
+    setUp();
+    setInterval(gameLoop, 2);
+    setInterval(reduceTime, 1000);
+
+    </script>
+  </body>
+</html>
